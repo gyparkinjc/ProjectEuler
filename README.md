@@ -21,7 +21,6 @@ Then "Input Number : " appear.
 [n] : nth solution
 
 
-
 [Development Environment]
 
 Download each languages interpreter and compiler.
