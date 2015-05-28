@@ -1,4 +1,3 @@
-# $debug = ARGV[0].to_i == 0 ? false : true
 module Euler
     $answers = {}
     File.open("../data/euler_answer.txt", "r") do |f|
@@ -9,10 +8,8 @@ module Euler
         end
     end
     
-    #$answer_func = {}
     def solution(proj)
         start_time = Time.now
-        #answer = $answer_func[proj]
         answer = eval("solution_#{proj}")
         elapsed_time = Time.now - start_time
         puts "[Proj #{proj}] : #{answer.to_s == $answers[proj]} #{answer} Time : #{elapsed_time}"

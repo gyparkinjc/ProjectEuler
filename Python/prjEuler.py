@@ -1,7 +1,6 @@
 import sys
 import time
 
-debug = int(sys.argv[1])
 answer = {}
 with open("../data/euler_answer.txt", "r") as f:
     for line in f.readlines():
