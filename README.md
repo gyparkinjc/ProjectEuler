@@ -9,6 +9,7 @@ Each language folder has a solution source file [prjEuler.xxx]
 
 Every solutions are included in one source file per each language.
 
+
 [usage]
 
 Execute prjEuler.xxx with each interpreter or compiler.
@@ -18,6 +19,7 @@ Then "Input Number : " appear.
 0 : all solutions
 
 [n] : nth solution
+
 
 
 [Development Environment]
