@@ -208,9 +208,9 @@
 ;;---------------------
 (define (solution14)
   (define (collatz n)
-    (cond ((= n 1) '(1))
-          ((odd? n) (cons n (collatz (+ (* 3 n) 1))))
-          (else (cons n (collatz (/ n 2))))))
+    (cond ((= n 1) 1)
+          ((odd? n) (+ 1 (collatz (+ (* 3 n) 1))))
+          (else (+ 1 (collatz (/ n 2))))))
   
   (_car (_fold (lambda (acc pair)
                  (if (>= (cadr acc) (cadr pair))
@@ -218,9 +218,8 @@
                      pair))
                '(1 1)
                (_map (lambda (n)
-                       (list n
-                             (length (collatz n))))
-                     (_range 1 1000000 1)))))
+                       (list n (collatz n)))
+                     (_range 2 1000000 1)))))
 ;;---------------------
 ;; Solution15
 ;;---------------------
