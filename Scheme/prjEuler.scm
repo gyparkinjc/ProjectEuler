@@ -235,6 +235,13 @@
                         (path (cons x (- y 1)))))))))
   
   (path '(20 . 20)))
+;;---------------------
+;; Solution16
+;;---------------------
+(define (solution16)
+  (foldl + 0 (map (lambda (c)
+                    (string->number (string c)))
+                  (string->list (number->string (expt 2 1000))))))
 
 ;;---------------------
 ;; Solution Framework
