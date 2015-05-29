@@ -274,8 +274,11 @@
 (define (solution proj answer)  
   (let ((func (lookup proj sMap))
         (ans (lookup proj answer)))
-    (let ((result (func)))
-      (printf "[Proj ~a] : ~a  ~a" proj (equal? result ans) result))))
+    (let ((start (current-inexact-milliseconds))
+          (result (func))
+          (end (current-inexact-milliseconds)))
+      (printf "[Proj ~a] : ~a  ~a Time: ~a"
+              proj (equal? result ans) result (/ (- end start) 1000)))))
 
 (define (solutionAll answer)
   (define (evalAll pair)
@@ -283,8 +286,13 @@
       (begin
         (solution proj answer)
         (newline))))
-    
-  (map evalAll sMap))
+
+  (let loop ((Map sMap))
+    (if (null? Map)
+        'done
+        (begin
+          (evalAll (car Map))
+          (loop (cdr Map))))))
 
 (define (main)
   (begin
