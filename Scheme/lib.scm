@@ -1,4 +1,8 @@
+(require scheme/mpair)
+
+;;------------------------------
 ;; Delayed Stream Construction
+;;------------------------------
 (define-syntax _cons
   (syntax-rules ()
     ((_cons a b)
@@ -6,7 +10,9 @@
 (define (_car stream) (car stream))
 (define (_cdr stream) (force (cdr stream)))
 
+;;------------------------------
 ;; Util Functions
+;;------------------------------
 (define (divisible? a b)
   (= (remainder a b) 0))
 
@@ -26,7 +32,9 @@
                   (loop (/ num (_car rest))
                         rest))))))
 
+;;------------------------------
 ;; List Utils Functions
+;;------------------------------
 (define (take n list)
   (if (or (= n 0) (null? list))
       '()
@@ -45,7 +53,9 @@
       '()
       (cons n (repeat n (- cnt 1)))))
 
+;;------------------------------
 ;; Stream Util Functions
+;;------------------------------
 (define (_map f stream)
   (if (null? stream)
       '()
@@ -161,7 +171,9 @@
                (_print (_car s))
                (loop (_cdr s))))))))
 
+;;------------------------------
 ;; Several Streams
+;;------------------------------
 (define (_range begin end step)
   (if (>= begin end)
       '()
@@ -200,4 +212,38 @@
 (define tri-numbers
   (let loop ((n 1) (cnt 2))
     (_cons n (loop (+ n cnt)
-                   (+ cnt 1)))))           
+                   (+ cnt 1)))))
+
+;;------------------------------
+;; Memoization
+;;------------------------------
+(define (mlookup key table)
+  (let ((record (find_record key (mcdr table))))
+    (if record
+        (mcdr record)
+        #f)))
+
+(define (find_record key records)
+  (cond ((null? records) #f)
+        ((equal? key (mcar (mcar records))) (mcar records))
+        (else (find_record key (mcdr records)))))
+
+(define (insert! key value table)
+  (let ((record (find_record key (mcdr table))))
+    (if record
+        (set-mcdr! record value)
+        (set-mcdr! table
+                   (mcons (mcons key value) (mcdr table))))
+    'ok))
+
+(define (make-table)
+  (mlist '*table*))
+
+(define (memoize f)
+  (let ((table (make-table)))
+    (lambda (x)
+      (let ((cached-result (mlookup x table)))
+        (or cached-result
+            (let ((result (f x)))
+              (insert! x result table)
+              result))))))

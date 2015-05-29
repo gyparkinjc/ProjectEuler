@@ -1,19 +1,27 @@
 (load "lib.scm")
 
-;; Solutions
+;;---------------------
+;; Solution1
+;;---------------------
 (define (solution1)
   (define (pred x)
     (or (= (remainder x 3) 0)
         (= (remainder x 5) 0)))
   
   (_fold + 0 (_filter pred (_range 1 1000 1))))
-
+;;---------------------
+;; Solution2
+;;---------------------
 (define (solution2)  
   (_fold + 0 (_takewhile (lambda (x) (< x 4000000)) (_filter even? fibs))))
-
+;;---------------------
+;; Solution3
+;;---------------------
 (define (solution3)  
   (_car (_reverse (prime-factor 600851475143))))
-
+;;---------------------
+;; Solution4
+;;---------------------
 (define (solution4)
   (define products
     (_flatmap 
@@ -22,10 +30,14 @@
      (_range 100 1000 1)))
   
   (_max (_filter is_palindrome? products)))
-
+;;---------------------
+;; Solution5
+;;---------------------
 (define (solution5)
   (_fold lcm 1 (_range 2 21 1)))
-
+;;---------------------
+;; Solution6
+;;---------------------
 (define (solution6)
   (define sum-of-sqr
     (_fold + 0 (_map sqr (_range 1 101 1))))
@@ -34,10 +46,14 @@
     (sqr (_fold + 0 (_range 1 101 1))))
   
   (- sqr-of-sum sum-of-sqr))
-
+;;---------------------
+;; Solution7
+;;---------------------
 (define (solution7)
   (_ref 10000 primes))
-
+;;---------------------
+;; Solution8
+;;---------------------
 (define (solution8)
   (define 1000-digit
     (call-with-input-file "../data/number_8.txt"
@@ -59,7 +75,9 @@
               (product-list (cdr list)))))
         
   (foldl max 0 (product-list digit-list)))
-
+;;---------------------
+;; Solution9
+;;---------------------
 (define (solution9)
   (define 1000-pairs
     (_flatmap (lambda (x)
@@ -82,10 +100,14 @@
      1000-pairs))
   
   (foldl * 1 (_car pytha-pair)))
-
+;;---------------------
+;; Solution10
+;;---------------------
 (define (solution10)
   (_fold + 0 (_takewhile (lambda (x) (< x 2000000)) primes)))
-
+;;---------------------
+;; Solution11
+;;---------------------
 (define (solution11)
   (define num-list
     (call-with-input-file "../data/20x20.txt"
@@ -135,7 +157,9 @@
                     (_car (_cdr p))
                     grid))
          pair)))
-
+;;---------------------
+;; Solution12
+;;---------------------
 (define (solution12)
   (define (f-pair factor)
     (let ((pair-list (map (lambda (x) 
@@ -161,7 +185,9 @@
   (_car (_filter (lambda (p) 
                    (> (num-of-divisor p) 500))
                  tri-numbers)))
-
+;;---------------------
+;; Solution13
+;;---------------------
 (define (solution13)
   (define num-list
     (call-with-input-file "../data/numbers.txt"
@@ -177,9 +203,42 @@
           (string->list 
            (number->string 
             (foldl + 0 num-list)))))))
+;;---------------------
+;; Solution14
+;;---------------------
+(define (solution14)
+  (define (collatz n)
+    (cond ((= n 1) '(1))
+          ((odd? n) (cons n (collatz (+ (* 3 n) 1))))
+          (else (cons n (collatz (/ n 2))))))
   
+  (_car (_fold (lambda (acc pair)
+                 (if (>= (cadr acc) (cadr pair))
+                     acc
+                     pair))
+               '(1 1)
+               (_map (lambda (n)
+                       (list n
+                             (length (collatz n))))
+                     (_range 1 1000000 1)))))
+;;---------------------
+;; Solution15
+;;---------------------
+(define (solution15)
+  (define path
+    (memoize (lambda (pair)
+               (let ((x (car pair))
+                     (y (cdr pair)))
+                 (if (or (= x 0) (= y 0))
+                     1
+                     (+ (path (cons (- x 1) y))
+                        (path (cons x (- y 1)))))))))
+  
+  (path '(20 . 20)))
 
+;;---------------------
 ;; Solution Framework
+;;---------------------
 (define sMap
   (list 
    (list 1 solution1)
@@ -195,6 +254,8 @@
    (list 11 solution11)
    (list 12 solution12)
    (list 13 solution13)
+   (list 14 solution14)
+   (list 15 solution15)
   )
 )
 
