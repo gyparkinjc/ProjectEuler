@@ -283,9 +283,8 @@
 (define (solutionAll answer)
   (define (evalAll pair)
     (let ((proj (car pair)))
-      (begin
-        (solution proj answer)
-        (newline))))
+      (solution proj answer)
+      (newline)))
 
   (let loop ((Map sMap))
     (if (null? Map)
@@ -295,20 +294,19 @@
           (loop (cdr Map))))))
 
 (define (main)
-  (begin
-    (let ((answer (call-with-input-file "../data/answer"
-                    (lambda (in)
-                      (let loop ((n 1)
-                                 (value (read in)))
-                        (if (equal? value eof)
-                            '()
-                            (cons (list n value)
-                                  (loop (+ n 1) (read in))))))))) 
-      (newline)
-      (display "Input Number: ") 
-      (let ((proj (read)))
-        (if (= proj 0)
-            (solutionAll answer)
-            (solution proj answer))))))
+  (let ((answer (call-with-input-file "../data/answer"
+                  (lambda (in)
+                    (let loop ((n 1)
+                               (value (read in)))
+                      (if (equal? value eof)
+                          '()
+                          (cons (list n value)
+                                (loop (+ n 1) (read in)))))))))
+    (newline)
+    (display "Input Number: ")
+    (let ((proj (read)))
+      (if (= proj 0)
+          (solutionAll answer)
+          (solution proj answer)))))
 
 (main)

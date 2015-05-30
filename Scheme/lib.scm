@@ -157,20 +157,17 @@
                (stream->list (_cdr streams))))))
 
 (define (_print stream)
-  (begin
-    (display "[ ")
-    (let loop ((s stream))
-      (cond ((null? s)
-             (display "]"))
-            ((not (pair? (_car s)))
-             (begin
-               (display (_car s))
-               (display " ")
-               (loop (_cdr s))))
-            (else
-             (begin
-               (_print (_car s))
-               (loop (_cdr s))))))))
+  (display "[ ")
+  (let loop ((s stream))
+    (cond ((null? s)
+           (display "]"))
+          ((not (pair? (_car s)))
+           (display (_car s))
+           (display " ")
+           (loop (_cdr s)))
+          (else
+           (_print (_car s))
+           (loop (_cdr s))))))
 
 ;;------------------------------
 ;; Several Streams
