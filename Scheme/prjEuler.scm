@@ -207,10 +207,11 @@
 ;; Solution14
 ;;---------------------
 (define (solution14)
-  (define (collatz n)
-    (cond ((= n 1) 1)
-          ((odd? n) (+ 1 (collatz (+ (* 3 n) 1))))
-          (else (+ 1 (collatz (/ n 2))))))
+  (define collatz
+    (memoize (lambda (n)
+               (cond ((= n 1) 1)
+                     ((odd? n) (+ 1 (collatz (+ (* 3 n) 1))))
+                     (else (+ 1 (collatz (/ n 2))))))))
   
   (_car (_fold (lambda (acc pair)
                  (if (>= (cadr acc) (cadr pair))

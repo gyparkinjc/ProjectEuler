@@ -1,4 +1,5 @@
 (require scheme/mpair)
+(require racket/base)
 
 ;;------------------------------
 ;; Delayed Stream Construction
@@ -217,33 +218,11 @@
 ;;------------------------------
 ;; Memoization
 ;;------------------------------
-(define (mlookup key table)
-  (let ((record (find_record key (mcdr table))))
-    (if record
-        (mcdr record)
-        #f)))
-
-(define (find_record key records)
-  (cond ((null? records) #f)
-        ((equal? key (mcar (mcar records))) (mcar records))
-        (else (find_record key (mcdr records)))))
-
-(define (insert! key value table)
-  (let ((record (find_record key (mcdr table))))
-    (if record
-        (set-mcdr! record value)
-        (set-mcdr! table
-                   (mcons (mcons key value) (mcdr table))))
-    'ok))
-
-(define (make-table)
-  (mlist '*table*))
-
 (define (memoize f)
-  (let ((table (make-table)))
+  (let ((table (make-hash)))
     (lambda (x)
-      (let ((cached-result (mlookup x table)))
+      (let ((cached-result (hash-ref table x #f)))
         (or cached-result
             (let ((result (f x)))
-              (insert! x result table)
+              (hash-set! table x result)
               result))))))
