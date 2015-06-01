@@ -197,12 +197,11 @@
               '()
               (cons value
                     (loop (read in))))))))
+  
   (string->number
-   (list->string
-    (take 10 
-          (string->list 
-           (number->string 
-            (foldl + 0 num-list)))))))
+   (substring (number->string
+               (foldl + 0 num-list))
+              0 10)))
 ;;---------------------
 ;; Solution14
 ;;---------------------
