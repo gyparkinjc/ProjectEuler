@@ -242,6 +242,47 @@
   (foldl + 0 (map (lambda (c)
                     (string->number (string c)))
                   (string->list (number->string (expt 2 1000))))))
+;;---------------------
+;; Solution17
+;;---------------------
+(define (solution17)
+  (define one
+    '("one" "two" "three" "four" "five" "six" "seven" "eight"
+            "nine""ten" "eleven" "twelve" "thirteen" "fourteen"
+            "fifteen" "sixteen" "seventeen" "eighteen" "nineteen"))
+  
+  (define ten
+    '("twenty" "thirty" "forty" "fifty" "sixty" "seventy" "eighty" "ninety"))
+  
+  (define (convert digits)
+    (let ((idx (string->number 
+                (string (string-ref digits 0)))))
+      (cond ((= 4 (string-length digits))
+             "onethousand")
+            ((= 3 (string-length digits))             
+             (string-append (list-ref one (- idx 1))
+                            "hundred"
+                            (if (= (remainder (string->number  digits) 100) 0)
+                                ""
+                                (string-append "and" (convert (substring digits 1))))))
+            ((= 2 (string-length digits) )
+             (cond ((= idx 0)
+                    (convert (substring digits 1)))
+                   ((= idx 1)
+                    (list-ref one 
+                              (- (string->number digits) 1)))
+                   (else
+                    (string-append (list-ref ten (- idx 2))
+                                   (convert (substring digits 1))))))
+            (else
+             (if (= idx 0)
+                 ""
+                 (list-ref one (- idx 1)))))))
+  
+  (_fold (lambda (digits acc)
+           ( + (string-length (convert digits))acc))
+         0
+         (_map number->string (_range 1 1001 1))))
 
 ;;---------------------
 ;; Solution Framework
@@ -263,6 +304,8 @@
    (list 13 solution13)
    (list 14 solution14)
    (list 15 solution15)
+   (list 16 solution16)
+   (list 17 solution17)
   )
 )
 

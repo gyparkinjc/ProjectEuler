@@ -76,7 +76,7 @@
   (if (null? stream)
       acc
       (_fold f
-             (f acc (_car stream))
+             (f (_car stream) acc)
              (_cdr stream))))
 
 (define (_take n stream)
