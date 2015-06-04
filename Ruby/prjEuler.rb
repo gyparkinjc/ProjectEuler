@@ -317,7 +317,6 @@ module Euler
             .inject(1) { |acc, n| acc * n }
         end
         $tri_numbers.each { |v| return v if num_of_divisor(v) > 500 }
-        # [20,30,40].each { |v| return v if num_of_divisor(v) == 8 }
     end
     
     #--------------------------------------------
